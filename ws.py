@@ -16,7 +16,7 @@ class Websocket:
     json_string = json.dumps(data)
 
     self.ws.send(json_string)
-    print(json_string)
+    print("Send websocket:" + json_string)
 
   def unsubscribe(self, channel):
     data = {
@@ -26,7 +26,7 @@ class Websocket:
     json_string = json.dumps(data)
 
     self.ws.send(json_string)
-    print(json_string)
+    print("Send websocket:" + json_string)
       
 
   def onMessage(self):

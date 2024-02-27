@@ -2,15 +2,23 @@ import ws
 import threading
 
 class WebsocketStore:
-  def __init__(self, baseURL, channels, header = None, callback = None):
-    self.channels = channels
+  def __init__(self, baseURL, header = None, callback = None):
     self.public = ws.Websocket(baseURL, "public", None, callback)
     self.private = ws.Websocket(baseURL, "private", header, callback)
   
-  async def run(self):
-    self.public.subscribe(self.channels["public"])
-    self.private.subscribe(self.channels["private"])
+  def subscribe(self, type, channel):
+    if type == "public":
+      self.public.subscribe(channel)
+    elif type == "private":
+      self.private.subscribe(channel)
 
+  def unsubscribe(self, type, channel):
+    if type == "public":
+      self.public.unsubscribe(channel)
+    elif type == "private":
+      self.private.unsubscribe(channel)
+
+  async def run(self):
     p1 = threading.Thread(target=self.public.onMessage)
     p1.start()
     

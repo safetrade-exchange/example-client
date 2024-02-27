@@ -3,9 +3,10 @@ import wsstore
 import ticker
 
 class SafeTrade:
-  def __init__(self, baseURL, key, secret, channel = None):
+  def __init__(self, baseURL, key, secret):
     self.client = api.Client(baseURL, key, secret)
-    self.ws = wsstore.WebsocketStore(baseURL, channel, self.client.headers, self.callback)
+    self.ws = wsstore.WebsocketStore(baseURL, self.client.headers, self.callback)
+
     self.tickers = {}
 
   def callback(self, data):
@@ -25,6 +26,12 @@ class SafeTrade:
             marketData["price_change_percent"],
             marketData["volume"]
           )
+
+  def subscribe(self, type, channel):
+    self.ws.subscribe(type, channel)
+
+  def unsubscribe(self, type, channel):
+    self.ws.unsubscribe(type, channel)
 
   async def run(self):
     await self.ws.run()
