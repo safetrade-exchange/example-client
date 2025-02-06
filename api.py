@@ -11,12 +11,12 @@ class Client:
     timestamp = self.get_timestamp()
     nonce = str(timestamp)
     signature = self.generate_signature(nonce, secret, key)
-    self.headers = {
-      "X-Auth-Apikey": key,
-      "X-Auth-Nonce":     nonce,
-      "X-Auth-Signature": signature,
-      "Content-Type":     "application/json;charset=utf-8",
-    }
+    self.headers = [
+      f"X-Auth-Apikey: {key}",
+      f"X-Auth-Nonce: {nonce}",
+      f"X-Auth-Signature: {signature}",
+      "Content-Type: application/json;charset=utf-8",
+    ]
 
   def get_api(self, url, headers=None):
     try:
@@ -33,7 +33,7 @@ class Client:
       # Handle connection errors
       print(f"Connection error: {e}")
       return None
-  
+
   def get_timestamp(self):
     data = self.get_api("/trade/public/timestamp")
     if data:
@@ -52,8 +52,8 @@ class Client:
     # Concatenate nonce and key, then calculate the HMAC hash
     hash.update((nonce + key).encode())
     signature = hash.digest()
-    
+
     # Convert the binary signature to hexadecimal representation
     signature_hex = binascii.hexlify(signature).decode()
-    
+
     return signature_hex

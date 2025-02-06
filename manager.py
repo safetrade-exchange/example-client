@@ -1,6 +1,7 @@
 import api
 import wsstore
 import ticker
+import asyncio
 
 class SafeTrade:
   def __init__(self, baseURL, key, secret):
