@@ -18,20 +18,6 @@ class WebsocketStore:
     elif type == "private":
       self.private.unsubscribe(channel)
 
-  def thread_task(name):
-    """A sample thread task that runs in a loop until stopped."""
-    while not stop_event.is_set():
-      print(f"Thread {name} running...")
-      time.sleep(1)
-    print(f"Thread {name} exiting...")
-
-  async def async_task():
-    """An async task that runs in a loop until stopped."""
-    while not stop_event.is_set():
-      print("Async task running...")
-      await asyncio.sleep(1)
-    print("Async task exiting...")
-
   async def run(self):
     p1 = threading.Thread(target=self.public.onMessage)
     p1.start()
