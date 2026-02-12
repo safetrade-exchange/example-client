@@ -44,7 +44,7 @@ class Client:
         if headers:
             auth_headers.update(headers)
         response = requests.post(self.baseURL + url, headers=auth_headers, json=data)
-        if response.status_code == 200:
+        if response.status_code in (200, 201):
             return response.json()
         else:
             print(f"Error: {response.status_code} - {response.text}")
@@ -63,6 +63,9 @@ class Client:
     signature_hex = binascii.hexlify(signature).decode()
 
     return signature_hex
+
+  def get_member_me(self):
+    return self.get_api("/trade/account/members/me")
 
   def get_orders(self, state=None):
     return self.get_api("/trade/market/orders", query={"state": state} if state else None)

@@ -5,10 +5,16 @@ import asyncio
 
 class SafeTrade:
   def __init__(self, baseURL, key, secret):
+    self.baseURL = baseURL
     self.client = api.Client(baseURL, key, secret)
-    self.ws = wsstore.WebsocketStore(baseURL, self.client.get_authentication(), self.callback)
-
+    self._ws = None
     self.tickers = {}
+
+  @property
+  def ws(self):
+    if self._ws is None:
+      self._ws = wsstore.WebsocketStore(self.baseURL, self.client.get_authentication(), self.callback)
+    return self._ws
 
   def callback(self, data):
     print(data)
